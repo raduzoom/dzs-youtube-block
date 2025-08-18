@@ -24,7 +24,9 @@ class DZSYtBlockAdmin {
 		if ( is_admin() ) {
 			wp_enqueue_script( 'jquery' );
 
-			if ( isset( $_GET['page'] ) && $_GET['page'] == $this->adminpagename_mainoptions ) {
+			// Sanitize the page parameter before using it
+			$page = sanitize_text_field($_GET['page'] ?? '');
+			if ( $page === $this->adminpagename_mainoptions ) {
 				wp_enqueue_script( 'dzsytb-mo', DZSYTB_BASE_URL . 'assets/admin-mo.js' );
 			}
 		}
@@ -37,6 +39,10 @@ class DZSYtBlockAdmin {
 
 	function handle_admin_menu() {
 
+		// Check if user has the required capability
+		if (!current_user_can($this->capability_admin)) {
+			return;
+		}
 
 		$admin_cap   = $this->capability_admin;
 		$dzsvcs_page = add_management_page( __( 'Debug ', 'dzsytb' ), __( 'Debug', 'dzsytb' ), $admin_cap, $this->adminpagename_mainoptions, array(
@@ -48,6 +54,13 @@ class DZSYtBlockAdmin {
 
 
 	function admin_page_mainoptions() {
+		// Verify user has the required capability
+		if (!current_user_can($this->capability_admin)) {
+			wp_die(__('You do not have sufficient permissions to access this page.', 'dzsytb'));
+		}
+
+		// Add nonce field for security
+		wp_nonce_field('dzsytb_admin_action', 'dzsytb_admin_nonce');
 
 		?>
 
@@ -56,4 +69,41 @@ class DZSYtBlockAdmin {
       <?php
 	}
 
+	/**
+	 * Verify nonce for admin actions
+	 * 
+	 * @param string $nonce_name The name of the nonce field
+	 * @param string $action The action name
+	 * @return bool True if nonce is valid, false otherwise
+	 */
+	private function verify_admin_nonce($nonce_name, $action) {
+		if (!isset($_POST[$nonce_name]) || !wp_verify_nonce($_POST[$nonce_name], $action)) {
+			wp_die(__('Security check failed. Please try again.', 'dzsytb'));
+		}
+		return true;
+	}
+
+	/**
+	 * Sanitize and validate admin form data
+	 * 
+	 * @param array $data The form data to sanitize
+	 * @return array The sanitized data
+	 */
+	private function sanitize_admin_data($data) {
+		$sanitized = array();
+		
+		if (is_array($data)) {
+			foreach ($data as $key => $value) {
+				if (is_string($value)) {
+					$sanitized[$key] = sanitize_text_field($value);
+				} elseif (is_array($value)) {
+					$sanitized[$key] = $this->sanitize_admin_data($value);
+				} else {
+					$sanitized[$key] = $value;
+				}
+			}
+		}
+		
+		return $sanitized;
+	}
 }

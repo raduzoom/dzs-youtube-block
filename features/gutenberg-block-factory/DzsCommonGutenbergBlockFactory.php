@@ -41,6 +41,9 @@ if (!class_exists('DzsCommonGutenbergBlockFactory')) {
      * @param array $pargs
      */
     function __construct(array $pargs = array()) {
+      // Sanitize constructor arguments
+      $pargs = $this->sanitize_constructor_args($pargs);
+      
       $blockFactoryAtts = array_merge(array(
         'gutenbergBlockName' => '',
         'gutenbergBlockNameJs' => '',
@@ -49,12 +52,12 @@ if (!class_exists('DzsCommonGutenbergBlockFactory')) {
         'blockOptions' => '',
         'actualShortcode' => '',
       ), $pargs);
-      $this->gutenbergBlockName = $blockFactoryAtts['gutenbergBlockName'];
-      $this->gutenbergBlockNameJs = $blockFactoryAtts['gutenbergBlockNameJs'];
-      $this->blockJsUrl = $blockFactoryAtts['blockJsUrl'];
-      $this->blockShortcode = $blockFactoryAtts['blockShortcode'];
+      $this->gutenbergBlockName = sanitize_key($blockFactoryAtts['gutenbergBlockName']);
+      $this->gutenbergBlockNameJs = sanitize_key($blockFactoryAtts['gutenbergBlockNameJs']);
+      $this->blockJsUrl = esc_url_raw($blockFactoryAtts['blockJsUrl']);
+      $this->blockShortcode = sanitize_key($blockFactoryAtts['blockShortcode']);
       $this->blockOptions = $blockFactoryAtts['blockOptions'];
-      $this->actualShortcode = $blockFactoryAtts['actualShortcode'];
+      $this->actualShortcode = sanitize_key($blockFactoryAtts['actualShortcode']);
 
 
       add_action('init', array($this, 'handle_init'), 20);
@@ -62,6 +65,31 @@ if (!class_exists('DzsCommonGutenbergBlockFactory')) {
       add_action('admin_footer', array($this, 'load_script'), 500);
     }
 
+    /**
+     * Sanitize constructor arguments
+     * 
+     * @param array $args The arguments to sanitize
+     * @return array The sanitized arguments
+     */
+    private function sanitize_constructor_args($args) {
+      $sanitized = array();
+      
+      if (is_array($args)) {
+        foreach ($args as $key => $value) {
+          $key = sanitize_key($key);
+          
+          if (is_string($value)) {
+            $sanitized[$key] = sanitize_text_field($value);
+          } elseif (is_array($value)) {
+            $sanitized[$key] = $this->sanitize_constructor_args($value);
+          } else {
+            $sanitized[$key] = $value;
+          }
+        }
+      }
+      
+      return $sanitized;
+    }
 
     /**
      * @param $argarr
@@ -70,15 +98,19 @@ if (!class_exists('DzsCommonGutenbergBlockFactory')) {
     public static function sanitize_config_to_gutenberg_register_block_type($argarr): array {
 
       $foutarr = array();
+      
+      if (!is_array($argarr)) {
+        return $foutarr;
+      }
+      
       foreach ($argarr as $lab => $arr) {
 
-        $key = $lab;
+        $key = sanitize_key($lab);
         $default = '';
 
         if (isset($arr['default'])) {
-          $default = $arr['default'];
+          $default = sanitize_text_field($arr['default']);
         }
-
 
         $foutarr[$key] = array(
           'type' => 'string',
@@ -93,6 +125,10 @@ if (!class_exists('DzsCommonGutenbergBlockFactory')) {
      * called on init start
      */
     function handle_init() {
+      // Check if user has permission to register scripts
+      if (!current_user_can('edit_posts')) {
+        return;
+      }
 
       // -- we store this for loading in the footer once all dependencies are loaded
       if (is_admin() && function_exists('wp_register_script')) {
@@ -116,11 +152,14 @@ if (!class_exists('DzsCommonGutenbergBlockFactory')) {
      * init end
      */
     function add_support_block() {
+      // Check if user has permission to register blocks
+      if (!current_user_can('edit_posts')) {
+        return;
+      }
+
       // -- in init
 
-
       // -- default atrributes gallery
-
 
       $atts_gutenberg_block = DzsCommonGutenbergBlockFactory::sanitize_config_to_gutenberg_register_block_type($this->blockOptions);
 
@@ -140,12 +179,14 @@ if (!class_exists('DzsCommonGutenbergBlockFactory')) {
      * called in admin_footer
      */
     function load_script() {
-
+      // Check if user has permission to load scripts
+      if (!current_user_can('edit_posts')) {
+        return;
+      }
 
       global $post;
 
 //     -- we need to remove gutenberg support if this is avada or wpbakery
-
 
       $isLoadScript = true;
 
@@ -164,7 +205,9 @@ if (!class_exists('DzsCommonGutenbergBlockFactory')) {
         }
       }
 
-      if (isset($_GET['post_type']) && $_GET['post_type'] == 'sp_easy_accordion') {
+      // Sanitize GET parameter
+      $post_type = sanitize_text_field($_GET['post_type'] ?? '');
+      if ($post_type == 'sp_easy_accordion') {
 
         $isLoadScript = false;
       }
@@ -184,16 +227,52 @@ if (!class_exists('DzsCommonGutenbergBlockFactory')) {
       $fout = '';
 
       if (is_admin()) {
+        // Check if user has permission to render in admin
+        if (!current_user_can('edit_posts')) {
+          return '';
+        }
       }
 
-
+      // Sanitize attributes
+      $attributes = $this->sanitize_render_attributes($attributes);
       $attributes['called_from'] = 'gutenberg_factory_render';
+      
       // todo: here
       $fout .= '<div class="gutenberg-dzs-generator-con">';
       $fout .= call_user_func_array($this->actualShortcode, array($attributes));
       $fout .= '</div>';
 
       return $fout;
+    }
+
+    /**
+     * Sanitize render attributes
+     * 
+     * @param array $attributes The attributes to sanitize
+     * @return array The sanitized attributes
+     */
+    private function sanitize_render_attributes($attributes) {
+      $sanitized = array();
+      
+      if (is_array($attributes)) {
+        foreach ($attributes as $key => $value) {
+          $key = sanitize_key($key);
+          
+          if (is_string($value)) {
+            $sanitized[$key] = sanitize_text_field($value);
+          } elseif (is_array($value)) {
+            $sanitized[$key] = $this->sanitize_render_attributes($value);
+          } elseif (is_numeric($value)) {
+            $sanitized[$key] = floatval($value);
+          } elseif (is_bool($value)) {
+            $sanitized[$key] = (bool) $value;
+          } else {
+            $sanitized[$key] = $value;
+          }
+        }
+      }
+      
+      return $sanitized;
     }
   }
 }

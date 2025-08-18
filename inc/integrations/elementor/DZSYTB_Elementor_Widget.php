@@ -5,6 +5,10 @@ if (!defined('ABSPATH')) {
   exit; // Exit if accessed directly.
 }
 
+// Check if Elementor is active
+if (!class_exists('\Elementor\Widget_Base')) {
+  return;
+}
 
 if (!function_exists('dzs_is_option_for_this')) {
   function dzs_is_option_for_this($oim, $seekedTag) {
@@ -25,16 +29,19 @@ if (!function_exists('dzs_is_option_for_this')) {
     return true;
   }
 }
+
 class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
 
   public static $slug = 'elementor-dzsytb-playlist';
   public static $controlsId = 'elementor-dzsytb-playlist';
+  
   protected function _register_controls() {
+    // Check if user has permission to edit
+    if (!current_user_can('edit_posts')) {
+      return;
+    }
 
     global $dzsytb;
-
-
-
 
     $this->start_controls_section(
       'content_section',
@@ -44,36 +51,36 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
       ]
     );
 
+    // Verify config file exists before including it
+    $config_file = DZSYTB_BASE_PATH . 'configs/config-gutenberg-player.php';
+    if (!file_exists($config_file)) {
+      error_log('DZS YouTube Block: Config file not found: ' . $config_file);
+      return;
+    }
 
-    $playerOptions = include(DZSYTB_BASE_PATH . 'configs/config-gutenberg-player.php');
-
+    $playerOptions = include($config_file);
 
     $arrOptions = array();
 
-
-
-
-
-
     $arrOptions = self::mapToElementor($this, $playerOptions, 'main');
-
-
 
     foreach ($arrOptions as $arrOption){
       $this->add_control($arrOption['controlName'], $arrOption['controlArgs']);
     }
 
-
     $this->end_controls_section();
-
-
-
-
   }
 
   static function mapToElementor($elm, $optionsItemMeta, $seekedCategory) {
     $arrOptions = array();
+    
+    if (!is_array($optionsItemMeta)) {
+      return $arrOptions;
+    }
+    
     foreach ($optionsItemMeta as $key => $configOption) {
+      // Sanitize the key
+      $key = sanitize_key($key);
 
       if (isset($configOption['category']) && $configOption['category'] === $seekedCategory) {
 
@@ -81,20 +88,19 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
 //          continue;
 //        }
 
-        $controlName = $configOption['name'];
-
+        $controlName = sanitize_key($configOption['name']);
 
         $placeholder = '';
         $default = '';
 
         if (isset($configOption['default'])) {
-          $default = $configOption['default'];
+          $default = sanitize_text_field($configOption['default']);
         }
         if (isset($configOption['default'])) {
-          $placeholder = $configOption['default'];
+          $placeholder = sanitize_text_field($configOption['default']);
         }
         $controlArgs = [
-          'label' => $configOption['title'],
+          'label' => sanitize_text_field($configOption['title']),
           'placeholder' => $placeholder,
           'default' => $default,
         ];
@@ -113,7 +119,7 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
 
           if (isset($configOption['upload_type'])){
 
-            $controlArgs['media_type'] = $configOption['upload_type'];
+            $controlArgs['media_type'] = sanitize_text_field($configOption['upload_type']);
             if($configOption['upload_type'] == 'audio') {
               $controlArgs['media_type'] = 'audio';
             }
@@ -125,7 +131,6 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
         }
         if ($configOption['type'] === 'select') {
           $controlArgs['type'] = \Elementor\Controls_Manager::SELECT;
-
 
           if (!isset($configOption['options'])) {
             if (isset($configOption['choices'])) {
@@ -159,7 +164,6 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
     return $arrOptions;
   }
 
-
   public function get_name() {
     return 'dzsytb_widget';
   }
@@ -177,19 +181,52 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
   }
 
   protected function render() {
+    // Check if user has permission to view
+    if (!current_user_can('read')) {
+      return;
+    }
+
     global $dzsytb;
 
     $settings = $this->get_settings_for_display();
 
+    // Sanitize settings before passing to shortcode
+    $settings = $this->sanitize_widget_settings($settings);
 
     echo '<div class="dzsytb-con-con">';
-
-
-
 
     echo $dzsytb->classView->shortcode_player($settings);
 
     echo '</div>';
+  }
 
+  /**
+   * Sanitize widget settings
+   * 
+   * @param array $settings The settings to sanitize
+   * @return array The sanitized settings
+   */
+  private function sanitize_widget_settings($settings) {
+    $sanitized = array();
+    
+    if (is_array($settings)) {
+      foreach ($settings as $key => $value) {
+        $key = sanitize_key($key);
+        
+        if (is_string($value)) {
+          $sanitized[$key] = sanitize_text_field($value);
+        } elseif (is_array($value)) {
+          $sanitized[$key] = $this->sanitize_widget_settings($value);
+        } elseif (is_numeric($value)) {
+          $sanitized[$key] = floatval($value);
+        } elseif (is_bool($value)) {
+          $sanitized[$key] = (bool) $value;
+        } else {
+          $sanitized[$key] = $value;
+        }
+      }
+    }
+    
+    return $sanitized;
   }
 }
