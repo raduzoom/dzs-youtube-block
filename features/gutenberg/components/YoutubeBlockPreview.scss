@@ -1,0 +1,85 @@
+.dzs-ytb--block-preview{
+  position: relative;
+
+  $minHeight: 250px;
+
+  &--height-decider{
+    display: flex;
+    flex-wrap: nowrap;
+
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  &--bg-with-ratio{
+    width: 100%;
+    padding-top: 65%;
+    flex: 100;
+  }
+  &--bg-placeholder{
+    position: relative;
+    height: 0;
+    min-height: $minHeight;
+    flex: 0 0 1px;
+  }
+
+
+  &--bg{
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+
+    filter: saturate(0.3) contrast(0.3);
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  &--form{
+    position: absolute;
+    display: flex;
+
+
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+
+    align-items: center;
+    justify-content: center;
+
+    &--inner{
+      background-color: rgba(0,0,0,0.5);
+      padding: 30px;
+      border-radius: 5px;
+
+      backdrop-filter: blur(15px);
+    }
+
+
+
+    .dzs-ytb--block-preview--att-row{
+      display: flex;
+
+      align-items: center;
+      color: #fafafa;
+
+      $widthLabel: 150px;
+      >span{
+        width: $widthLabel;
+        flex: 0 0 $widthLabel;
+        display: block;
+
+        font-size: 13px;
+      }
+
+      >input{
+        flex: 100;
+      }
+    }
+  }
+}

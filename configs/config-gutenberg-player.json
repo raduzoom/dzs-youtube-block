@@ -1,0 +1,126 @@
+{
+  "youtubeUrl": {
+    "name": "youtubeUrl",
+    "type": "text",
+    "title": "YouTube URL",
+    "sidenote": "youtube URL",
+    "context": "content",
+    "default": "",
+    "category": "main"
+  },
+  "title": {
+    "name": "title",
+    "type": "text",
+    "title": "Title",
+    "sidenote": "set title",
+    "context": "content",
+    "default": "",
+    "category": "main"
+  },
+  "subtitle": {
+    "name": "subtitle",
+    "type": "text",
+    "title": "Subtitle",
+    "sidenote": "set subtitle",
+    "context": "content",
+    "default": "",
+    "category": "main"
+  },
+  "artistname": {
+    "name": "artistname",
+    "type": "text",
+    "title": "Artist Title ( line 1 )",
+    "sidenote": "title to appear on the left top",
+    "context": "content",
+    "default": "default",
+    "category": "main"
+  },
+  "aspectRatio": {
+    "name": "aspectRatio",
+    "type": "text",
+    "title": "Aspect Ratio",
+    "sidenote": "title to appear on the left top",
+    "context": "content",
+    "default": "0.65 ",
+    "category": "main"
+  },
+  "the_post_title": {
+    "name": "the_post_title",
+    "type": "text",
+    "title": "Song Title",
+    "only_for": [
+      "sliders_admin"
+    ],
+    "sidenote": "the title of the song",
+    "category": "main"
+  },
+
+
+  "youtube_params": {
+    "name": "youtube_params",
+    "type": "textarea",
+    "extra_type": "WYSIWYG",
+    "upload_type": "image",
+    "title": "Description",
+    "default": "controls=0&modestbranding=2&rel=0&enablejsapi=1&rel=0&playsinline=1&mute=1",
+    "sidenote": "extra params",
+    "category": "main"
+  },
+  "playfrom": {
+    "name": "playfrom",
+    "type": "text",
+    "category": "misc",
+    "title": "Play from",
+    "sidenote": "choose a number of seconds from which the track to play from ( for example if set &quot;70&quot; then the track will start to play from 1 minute and 10 seconds ) or input &quot;last&quot; for the track to play at the last position where it was."
+  },
+  "item_extra_classes_player": {
+    "name": "item_extra_classes_player",
+    "type": "text",
+    "category": "extra_html",
+    "title": "Extra Classes",
+    "sidenote": "extra html classes applied to the player"
+  },
+  "max_height": {
+    "name": "max_height",
+    "type": "text",
+    "category": "main",
+    "title": "Max Height",
+    "sidenote": "max height"
+  },
+
+
+
+
+  "cover": {
+    "name": "cover",
+    "type": "attach",
+    "upload_type": "image",
+    "title": "Cover",
+    "sidenote": "cover image to show before video play",
+    "context": "content",
+    "default": "",
+    "category":"main",
+    "it_is_for": "shortcode_generator"
+  },
+  "autoplay": {
+    "name": "autoplay",
+    "type": "select",
+    "extra_type": "switcher",
+    "title": "Autoplay",
+    "sidenote": "autoplay the video",
+    "context": "content",
+    "options": [
+      {
+        "label": "Off",
+        "value": "off"
+      },
+      {
+        "label": "On",
+        "value": "on"
+      }
+    ],
+    "default": "off",
+    "category": "main",
+    "it_is_for": "shortcode_generator"
+  }
+}
