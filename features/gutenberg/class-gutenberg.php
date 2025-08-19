@@ -8,7 +8,7 @@ class DZSYTBGutenberg {
   /**
    * @param DZSYtBlock $dzsytb
    */
-  function __construct($dzsytb) {
+  function __construct(DZSYtBlock $dzsytb) {
 
     $this->dzsytb = $dzsytb;
 
@@ -19,7 +19,7 @@ class DZSYTBGutenberg {
 
 
   }
-  function handle_init() {
+  function handle_init(): void {
 
 
 

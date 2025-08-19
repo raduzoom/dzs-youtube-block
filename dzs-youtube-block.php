@@ -1,9 +1,11 @@
 <?php
 /*
-  Plugin Name: YouTube Block DZS
+  Plugin Name: Video Block for YouTube DZS
   Plugin URI: https://digitalzoomstudio.net/
   Description: Add a youtube block.
   Version: 1.0.0
+ * License: GPL-2.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
   Author: Digital Zoom Studio
   Author URI: https://digitalzoomstudio.net/
  */
@@ -26,7 +28,7 @@ if (function_exists('plugin_dir_path')) {
 // Include main class file with existence check
 $main_class_file = DZSYTB_BASE_PATH . 'class-dzsytb.php';
 if (!file_exists($main_class_file)) {
-    wp_die(__('Required plugin file not found. Please reinstall the plugin.', 'dzsytb'));
+    wp_die(esc_html__('Required plugin file not found. Please reinstall the plugin.', 'dzsytb'));
 }
 
 if (!class_exists('DZSYtBlock')) {
@@ -46,7 +48,7 @@ $config_file = DZSYTB_BASE_PATH . 'configs/config.php';
 if (file_exists($config_file)) {
     include_once($config_file);
 } else {
-    wp_die(__('Configuration file not found. Please reinstall the plugin.', 'dzsytb'));
+    wp_die(esc_html__('Configuration file not found. Please reinstall the plugin.', 'dzsytb'));
 }
 
 // Initialize the plugin
@@ -56,8 +58,8 @@ try {
     // Log error and display user-friendly message
     error_log('DZS YouTube Block initialization error: ' . $e->getMessage());
     add_action('admin_notices', function() {
-        echo '<div class="notice notice-error"><p>' . 
-             __('DZS YouTube Block failed to initialize. Please check the error logs or reinstall the plugin.', 'dzsytb') . 
+        echo '<div class="notice notice-error"><p>' .
+             esc_html__('DZS YouTube Block failed to initialize. Please check the error logs or reinstall the plugin.', 'dzsytb') .
              '</p></div>';
     });
     return;
@@ -67,15 +69,15 @@ if (!function_exists('dzs_read_from_file_ob')) {
 
   function dzs_read_from_file_ob(string $filepath) {
     // -- @filepath - relative to dzs_functions
-    
+
     // Security check: ensure filepath is within plugin directory
     $real_filepath = realpath($filepath);
     $plugin_path = realpath(DZSYTB_BASE_PATH);
-    
+
     if ($real_filepath === false || strpos($real_filepath, $plugin_path) !== 0) {
         return '';
     }
-    
+
     ob_start();
     include($filepath);
     return ob_get_clean();

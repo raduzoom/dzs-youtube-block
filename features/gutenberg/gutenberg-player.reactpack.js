@@ -44,7 +44,6 @@ const DzsytbGutenbergPlayer = new BlockFactory({
     }
 
     function updateProps(newProps){
-      console.log(newProps, this);
 
       Object.keys(newProps).forEach((lab) => {
 
@@ -116,7 +115,6 @@ const DzsytbGutenbergPlayer = new BlockFactory({
   'ignoredKeysInOptions': ['artistname', 'the_post_title', "youtubeUrl", "title", 'subtitle'],
   'sidenoteReplaces': {
     dzsapEditConfigLink: (argProps) => {
-      console.log(argProps);
       return `<a href="${'' + 'admin.php?page=dzsap_configs&find_slider_by_slug=' + argProps.attributes.config}" target="_blank">Edit Here</a>`;
     }
   },

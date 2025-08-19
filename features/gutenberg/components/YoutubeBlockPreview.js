@@ -51,7 +51,6 @@ export function YoutubeBlockPreview(props) {
   const [cover, setCover] = useState(DEFAULT_VALS['cover']);
   const [storeProps, setStoreProps] = useState(DEFAULT_VALS);
 
-  // http://i3.ytimg.com/vi/90_7t-uCLEw/hqdefault.jpg
 
 
   useEffect(() => {
@@ -59,16 +58,13 @@ export function YoutubeBlockPreview(props) {
 
 
 
-    console.log('init BLOCK', props);
 
     var attributesFromMain = props.props.attributes;
-    console.log('props.props.attributes -> ', attributesFromMain);
 
 
     setStoreProps(Object.assign({...DEFAULT_VALS}, {...attributesFromMain}));
     Object.keys(attributesFromMain).forEach((prop)=>{
       const val = attributesFromMain[prop];
-      console.log('prop - ', prop, val, 'DEFAULT_VALS[prop] - ', DEFAULT_VALS[prop], val!==DEFAULT_VALS[prop] && Object.keys(DEFAULT_VALS).includes(prop));
 
       if(val!==DEFAULT_VALS[prop] && Object.keys(DEFAULT_VALS).includes(prop)){
         adjustProp(prop, val);
@@ -76,10 +72,6 @@ export function YoutubeBlockPreview(props) {
     })
   }, []);
 
-  // const onChangeHandler = useCallback((event) => {
-  //
-  //   handleChange(event);
-  // }, [setAspectRatio]);
 
   function adjustProp(name, value) {
 
@@ -121,22 +113,8 @@ export function YoutubeBlockPreview(props) {
     const value = $currTarget.value;
 
     adjustProp(name, value);
-    console.log($currTarget.name);
-    console.log($currTarget.value);
 
 
-    // setTimeout(()=>{
-    //
-    //   const newProps = {
-    //     youtubeUrl: youtubeUrl,
-    //     aspectRatio,
-    //     title: title
-    //   };
-    //   console.log('chaNGE', newProps);
-    //
-    //
-    //   props.updateProps(newProps);
-    // },10);
   }
 
   const getCoverImage = () => {
@@ -148,9 +126,17 @@ export function YoutubeBlockPreview(props) {
     return youtubeUrl ? `url(https://i3.ytimg.com/vi/${getYouTubeId(youtubeUrl)}/hqdefault.jpg)`: '';
   }
 
-  const blockCssName = "dzs-ytb--block-preview"
+  const blockCssName = "dzs-ytb--block-preview";
+
+  const styleHeightDecider = {};
+
+  const mainAtts = props.props.attributes;
+
+  if(mainAtts.max_height){
+    styleHeightDecider.maxHeight = mainAtts.max_height + 'px';
+  }
   return <div className={blockCssName}>
-    <div className={`${blockCssName}--height-decider`}>
+    <div className={`${blockCssName}--height-decider`} style={styleHeightDecider}>
       <div className={`${blockCssName}--bg-placeholder`}></div>
       <div className={`${blockCssName}--bg-with-ratio`} style={{paddingTop: String(aspectRatio * 100) + '%' }}></div>
     </div>

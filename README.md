@@ -1,8 +1,8 @@
-=== DZS YouTube Block ===
+=== Video Block for YouTube DZS ===
 Contributors: digitalzoomstudio
-Tags: youtube, video, gutenberg, block, media, embed
+Tags: youtube, video, gutenberg, block, media
 Requires at least: 5.0
-Tested up to: 6.4
+Tested up to: 6.8
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPLv2 or later

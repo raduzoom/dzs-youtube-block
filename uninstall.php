@@ -1,40 +1,40 @@
 <?php
 /**
  * Uninstall DZS YouTube Block Plugin
- * 
+ *
  * This file is executed when the plugin is deleted from WordPress.
  * It cleans up all plugin data, options, and any other traces.
- * 
+ *
  * @package DZSYouTubeBlock
  * @version 1.0.0
  */
 
 // If uninstall not called from WordPress, exit
 if (!defined('WP_UNINSTALL_PLUGIN')) {
-    exit;
+  exit;
 }
 
 // Check if user has permission to uninstall
 if (!current_user_can('activate_plugins')) {
-    return;
+  return;
 }
 
 // Define plugin constants if not already defined
 if (!defined('DZSYTB_VERSION')) {
-    define('DZSYTB_VERSION', '1.0.0');
+  define('DZSYTB_VERSION', '1.0.0');
 }
 
 // Clean up plugin options
 $options_to_delete = array(
-    'dzsytb_settings',
-    'dzsytb_version',
-    'dzsytb_activated',
-    'dzsytb_db_version'
+  'dzsytb_settings',
+  'dzsytb_version',
+  'dzsytb_activated',
+  'dzsytb_db_version'
 );
 
 foreach ($options_to_delete as $option) {
-    delete_option($option);
-    delete_site_option($option); // For multisite
+  delete_option($option);
+  delete_site_option($option); // For multisite
 }
 
 // Clean up user meta (if any)
@@ -46,12 +46,12 @@ $wpdb->query("DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE 'dzsytb_%'");
 
 // Clean up any custom database tables (if created)
 $tables_to_drop = array(
-    $wpdb->prefix . 'dzsytb_logs',
-    $wpdb->prefix . 'dzsytb_analytics'
+  $wpdb->prefix . 'dzsytb_logs',
+  $wpdb->prefix . 'dzsytb_analytics'
 );
 
 foreach ($tables_to_drop as $table) {
-    $wpdb->query("DROP TABLE IF EXISTS {$table}");
+  $wpdb->query("DROP TABLE IF EXISTS {$table}");
 }
 
 // Clean up any transients
@@ -65,15 +65,15 @@ wp_clear_scheduled_hook('dzsytb_analytics');
 // Remove any custom capabilities (if added)
 $admin_role = get_role('administrator');
 if ($admin_role) {
-    $capabilities_to_remove = array(
-        'manage_dzsytb',
-        'edit_dzsytb',
-        'delete_dzsytb'
-    );
-    
-    foreach ($capabilities_to_remove as $cap) {
-        $admin_role->remove_cap($cap);
-    }
+  $capabilities_to_remove = array(
+    'manage_dzsytb',
+    'edit_dzsytb',
+    'delete_dzsytb'
+  );
+
+  foreach ($capabilities_to_remove as $cap) {
+    $admin_role->remove_cap($cap);
+  }
 }
 
 // Clean up any uploaded files in wp-content/uploads/dzsytb/ (if exists)
@@ -81,37 +81,35 @@ $upload_dir = wp_upload_dir();
 $plugin_upload_dir = $upload_dir['basedir'] . '/dzsytb/';
 
 if (is_dir($plugin_upload_dir)) {
-    // Recursively remove directory and contents
-    function dzsytb_remove_directory($dir) {
-        if (is_dir($dir)) {
-            $files = array_diff(scandir($dir), array('.', '..'));
-            foreach ($files as $file) {
-                $path = $dir . '/' . $file;
-                if (is_dir($path)) {
-                    dzsytb_remove_directory($path);
-                } else {
-                    unlink($path);
-                }
-            }
-            return rmdir($dir);
+  // Recursively remove directory and contents
+  function dzsytb_remove_directory($dir) {
+    if (is_dir($dir)) {
+      $files = array_diff(scandir($dir), array('.', '..'));
+      foreach ($files as $file) {
+        $path = $dir . '/' . $file;
+        if (is_dir($path)) {
+          dzsytb_remove_directory($path);
+        } else {
+          wp_delete_file($path);
         }
-        return false;
+      }
+
+      $wp_filesystem_base = WP_Filesystem_Base();
+      $wp_filesystem_base->rmdir(dirname($dir), true);
     }
-    
-    dzsytb_remove_directory($plugin_upload_dir);
+    return false;
+  }
+
+  dzsytb_remove_directory($plugin_upload_dir);
 }
 
-// Log uninstall for debugging (optional)
-if (defined('WP_DEBUG') && WP_DEBUG) {
-    error_log('DZS YouTube Block plugin uninstalled and cleaned up successfully.');
-}
 
 // Clear any cached data
 if (function_exists('wp_cache_flush')) {
-    wp_cache_flush();
+  wp_cache_flush();
 }
 
 // Clear object cache if using external caching
 if (function_exists('wp_cache_clear_cache')) {
-    wp_cache_clear_cache();
+  wp_cache_clear_cache();
 }

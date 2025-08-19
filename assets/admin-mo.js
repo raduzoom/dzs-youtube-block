@@ -1,6 +1,5 @@
 jQuery(document).ready(function($){
 
-    console.warn($('button[value="dzsedg_enable_max_input_vars_5000"]'))
     $(document).on('click', 'button[value="dzsedg_enable_max_input_vars_5000"]', function(){
         var r = confirm("WARNING - high risk in breaking htaccess - only click if you know what you are doing");
 

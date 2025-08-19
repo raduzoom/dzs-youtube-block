@@ -29,19 +29,17 @@ class DzsYtbPlayer {
 
 
     try{
-      console.log('playerArgs - ', $ytb.attr('data-player_args'));
       playerArgs = Object.assign(playerArgs, JSON.parse($ytb.attr('data-player_args')))
     }catch (e) {
 
-      console.log('e - ', e);
+      console.log('[err] e - ', e);
     }
-    console.log('playerArgs - ', playerArgs);
 
 
     let player$ = this.getPlayer($ytb);
     player$.then(function(playerHere){
 
-      if(playerArgs.autoplay==='on'){
+      if(playerArgs.autoplay==='on'){ 
 
         playerHere.mute();
         playerHere.playVideo();
@@ -58,7 +56,6 @@ class DzsYtbPlayer {
       self.handleResize(null);
 
       playerHere.addEventListener("onReady", function(){
-        console.log('player ready');
       });
 
     })
@@ -67,7 +64,7 @@ class DzsYtbPlayer {
 
   init(){
 
-    this.initYoutubeBlock(this.$ytb); 
+    this.initYoutubeBlock(this.$ytb);
 
   }
 
@@ -78,7 +75,6 @@ class DzsYtbPlayer {
   handleResize(event)  {
 
     const $ytb = this.$ytb;
-    console.log($ytb);
 
     let tw = $ytb.outerWidth();
     let th = $ytb.outerHeight();
@@ -93,7 +89,6 @@ class DzsYtbPlayer {
 
 
 
-    console.log(tw,th);
 
     if(th > targetHeight){
       targetWidth = RATIO_W/RATIO_H * th;
@@ -110,7 +105,6 @@ class DzsYtbPlayer {
     /** @type {jQuery} */
     const $ytl =$ytb.find('lite-youtube');
 
-    console.log($ytb.find('lite-youtube'))
     if(excessW){
       $ytl.css({
         'width': `calc(${tw + excessW}px)`,
@@ -130,7 +124,6 @@ class DzsYtbPlayer {
       })
     }
 
-    console.log(targetWidth,targetHeight);
   }
 }
 

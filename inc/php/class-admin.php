@@ -24,10 +24,11 @@ class DZSYtBlockAdmin {
 		if ( is_admin() ) {
 			wp_enqueue_script( 'jquery' );
 
+      $getPage = wp_unslash($_GET['page'] ?? '');
 			// Sanitize the page parameter before using it
-			$page = sanitize_text_field($_GET['page'] ?? '');
+			$page = $getPage;
 			if ( $page === $this->adminpagename_mainoptions ) {
-				wp_enqueue_script( 'dzsytb-mo', DZSYTB_BASE_URL . 'assets/admin-mo.js' );
+				wp_enqueue_script( 'dzsytb-mo', DZSYTB_BASE_URL . 'assets/admin-mo.js' , array(),DZSYTB_VERSION);
 			}
 		}
 		add_action( 'admin_menu', array( $this, 'handle_admin_menu' ) );
@@ -71,13 +72,13 @@ class DZSYtBlockAdmin {
 
 	/**
 	 * Verify nonce for admin actions
-	 * 
+	 *
 	 * @param string $nonce_name The name of the nonce field
 	 * @param string $action The action name
 	 * @return bool True if nonce is valid, false otherwise
 	 */
 	private function verify_admin_nonce($nonce_name, $action) {
-		if (!isset($_POST[$nonce_name]) || !wp_verify_nonce($_POST[$nonce_name], $action)) {
+		if (!isset($_POST[$nonce_name]) || !wp_verify_nonce(sanitize_key($_POST[$nonce_name]), $action)) {
 			wp_die(__('Security check failed. Please try again.', 'dzsytb'));
 		}
 		return true;
@@ -85,13 +86,13 @@ class DZSYtBlockAdmin {
 
 	/**
 	 * Sanitize and validate admin form data
-	 * 
+	 *
 	 * @param array $data The form data to sanitize
 	 * @return array The sanitized data
 	 */
 	private function sanitize_admin_data($data) {
 		$sanitized = array();
-		
+
 		if (is_array($data)) {
 			foreach ($data as $key => $value) {
 				if (is_string($value)) {
@@ -103,7 +104,7 @@ class DZSYtBlockAdmin {
 				}
 			}
 		}
-		
+
 		return $sanitized;
 	}
 }

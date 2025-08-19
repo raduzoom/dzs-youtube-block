@@ -41,7 +41,6 @@
 
   &--form{
     position: absolute;
-    display: flex;
 
 
     top:0;
@@ -79,6 +78,7 @@
 
       >input{
         flex: 100;
+        min-width: 0;
       }
     }
   }
