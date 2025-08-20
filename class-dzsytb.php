@@ -78,12 +78,12 @@ class DZSYtBlock {
   private function handle_admin_actions() {
     // Verify nonce for admin actions
     if (!isset($_POST['dzsytb_nonce']) || !wp_verify_nonce(wp_unslash($_POST['dzsytb_nonce']), 'dzsytb_action')) {
-      wp_die(esc_html__('Security check failed. Please try again.', 'dzsytb'));
+      wp_die(esc_html__('Security check failed. Please try again.', 'dzs-youtube-block'));
     }
 
     // Check user capabilities
     if (!current_user_can('manage_options')) {
-      wp_die(esc_html__('You do not have sufficient permissions to perform this action.', 'dzsytb'));
+      wp_die(esc_html__('You do not have sufficient permissions to perform this action.', 'dzs-youtube-block'));
     }
 
     // Sanitize action type
@@ -97,7 +97,7 @@ class DZSYtBlock {
         $this->handle_reset_settings();
         break;
       default:
-        wp_die(esc_html__('Invalid action specified.', 'dzsytb'));
+        wp_die(esc_html__('Invalid action specified.', 'dzs-youtube-block'));
     }
   }
 

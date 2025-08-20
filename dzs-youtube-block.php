@@ -1,7 +1,7 @@
 <?php
 /*
-  Plugin Name: Video Block for YouTube DZS
-  Plugin URI: https://digitalzoomstudio.net/
+  Plugin Name: Video Block Cover for YouTube DZS, Elementor
+  Plugin URI: https://github.com/raduzoom/
   Description: Add a youtube block.
   Version: 1.0.0
  * License: GPL-2.0-or-later
@@ -28,7 +28,7 @@ if (function_exists('plugin_dir_path')) {
 // Include main class file with existence check
 $main_class_file = DZSYTB_BASE_PATH . 'class-dzsytb.php';
 if (!file_exists($main_class_file)) {
-    wp_die(esc_html__('Required plugin file not found. Please reinstall the plugin.', 'dzsytb'));
+    wp_die(esc_html__('Required plugin file not found. Please reinstall the plugin.', 'dzs-youtube-block'));
 }
 
 if (!class_exists('DZSYtBlock')) {
@@ -48,7 +48,7 @@ $config_file = DZSYTB_BASE_PATH . 'configs/config.php';
 if (file_exists($config_file)) {
     include_once($config_file);
 } else {
-    wp_die(esc_html__('Configuration file not found. Please reinstall the plugin.', 'dzsytb'));
+    wp_die(esc_html__('Configuration file not found. Please reinstall the plugin.', 'dzs-youtube-block'));
 }
 
 // Initialize the plugin
@@ -59,7 +59,7 @@ try {
     error_log('DZS YouTube Block initialization error: ' . $e->getMessage());
     add_action('admin_notices', function() {
         echo '<div class="notice notice-error"><p>' .
-             esc_html__('DZS YouTube Block failed to initialize. Please check the error logs or reinstall the plugin.', 'dzsytb') .
+             esc_html__('DZS YouTube Block failed to initialize. Please check the error logs or reinstall the plugin.', 'dzs-youtube-block') .
              '</p></div>';
     });
     return;

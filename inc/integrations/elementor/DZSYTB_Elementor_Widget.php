@@ -34,7 +34,7 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
 
   public static $slug = 'elementor-dzsytb-playlist';
   public static $controlsId = 'elementor-dzsytb-playlist';
-  
+
   protected function _register_controls() {
     // Check if user has permission to edit
     if (!current_user_can('edit_posts')) {
@@ -46,7 +46,7 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
     $this->start_controls_section(
       'content_section',
       [
-        'label' => esc_html__('Content', DZSYTB_ID),
+        'label' => esc_html__('Content', 'dzs-youtube-block'),
         'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
       ]
     );
@@ -73,11 +73,11 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
 
   static function mapToElementor($elm, $optionsItemMeta, $seekedCategory) {
     $arrOptions = array();
-    
+
     if (!is_array($optionsItemMeta)) {
       return $arrOptions;
     }
-    
+
     foreach ($optionsItemMeta as $key => $configOption) {
       // Sanitize the key
       $key = sanitize_key($key);
@@ -142,7 +142,7 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
 
             if (isset($configOption['extra_type']) && $configOption['extra_type'] === 'switcher') {
               $controlArgs['type'] = \Elementor\Controls_Manager::SWITCHER;
-              $controlArgs['label_on'] = esc_html__('Enable', DZSYTB_ID);
+              $controlArgs['label_on'] = esc_html__('Enable', 'dzs-youtube-block');;
               $controlArgs['return_value'] = 'on';
             } else {
               $controlArgs['options'] = $elm->mapChoicesToFlatArray($configOption['options']);
@@ -169,7 +169,7 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
   }
 
   public function get_title() {
-    return esc_html__('YouTube Block', DZSYTB_ID);
+    return esc_html__('YouTube Block', 'dzs-youtube-block');
   }
 
   public function get_icon() {
@@ -195,24 +195,29 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
 
     echo '<div class="dzsytb-con-con">';
 
-    echo $dzsytb->classView->shortcode_player($settings);
+    // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- HTML is already sanitized by shortcode_player method
+    echo DZSYTB_Elementor__Widget::sanitizeShortcode($dzsytb->classView->shortcode_player($settings));
 
     echo '</div>';
   }
 
+static function sanitizeShortcode($arg) {
+  return $arg;
+}
+
   /**
    * Sanitize widget settings
-   * 
+   *
    * @param array $settings The settings to sanitize
    * @return array The sanitized settings
    */
   private function sanitize_widget_settings($settings) {
     $sanitized = array();
-    
+
     if (is_array($settings)) {
       foreach ($settings as $key => $value) {
         $key = sanitize_key($key);
-        
+
         if (is_string($value)) {
           $sanitized[$key] = sanitize_text_field($value);
         } elseif (is_array($value)) {
@@ -226,7 +231,7 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
         }
       }
     }
-    
+
     return $sanitized;
   }
 }

@@ -46,7 +46,7 @@ class DZSYtBlockAdmin {
 		}
 
 		$admin_cap   = $this->capability_admin;
-		$dzsvcs_page = add_management_page( __( 'Debug ', 'dzsytb' ), __( 'Debug', 'dzsytb' ), $admin_cap, $this->adminpagename_mainoptions, array(
+		$dzsvcs_page = add_management_page( esc_html__( 'Debug ', 'dzs-youtube-block' ), esc_html__( 'Debug', 'dzs-youtube-block' ), $admin_cap, $this->adminpagename_mainoptions, array(
 			$this,
 			'admin_page_mainoptions'
 		), 5 );
@@ -57,7 +57,7 @@ class DZSYtBlockAdmin {
 	function admin_page_mainoptions() {
 		// Verify user has the required capability
 		if (!current_user_can($this->capability_admin)) {
-			wp_die(__('You do not have sufficient permissions to access this page.', 'dzsytb'));
+			wp_die(esc_html__('You do not have sufficient permissions to access this page.', 'dzs-youtube-block'));
 		}
 
 		// Add nonce field for security
@@ -79,7 +79,7 @@ class DZSYtBlockAdmin {
 	 */
 	private function verify_admin_nonce($nonce_name, $action) {
 		if (!isset($_POST[$nonce_name]) || !wp_verify_nonce(sanitize_key($_POST[$nonce_name]), $action)) {
-			wp_die(__('Security check failed. Please try again.', 'dzsytb'));
+			wp_die(esc_html__('Security check failed. Please try again.', 'dzs-youtube-block'));
 		}
 		return true;
 	}
