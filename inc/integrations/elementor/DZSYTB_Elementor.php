@@ -9,12 +9,12 @@ class DZSYTB_Elementor {
    */
   function __construct(DZSYtBlock $dzsytb) {
     $this->dzsytb = $dzsytb;
-    
+
     // Check if user has permission to use Elementor
     if (!current_user_can('edit_posts')) {
       return;
     }
-    
+
     // Add Plugin actions
     add_action('elementor/widgets/widgets_registered', [$this, 'init_widgets']);
     add_action('elementor/controls/controls_registered', [$this, 'init_controls']);
@@ -34,20 +34,17 @@ class DZSYTB_Elementor {
     }
 
     $widget_file = DZSYTB_BASE_PATH . 'inc/integrations/elementor/DZSYTB_Elementor_Widget.php';
-    
+
     // Verify the widget file exists before including it
     if (!file_exists($widget_file)) {
-      error_log('DZS YouTube Block: Elementor widget file not found: ' . $widget_file);
       return;
     }
 
     include_once($widget_file);
-    
+
     // Check if the widget class exists before instantiating
     if (class_exists('DZSYTB_Elementor__Widget')) {
       Plugin::instance()->widgets_manager->register_widget_type(new DZSYTB_Elementor__Widget());
-    } else {
-      error_log('DZS YouTube Block: Elementor widget class not found');
     }
   }
 
@@ -56,7 +53,7 @@ class DZSYTB_Elementor {
     if (!current_user_can('edit_posts')) {
       return;
     }
-    
+
     // Add custom controls if needed
   }
 }

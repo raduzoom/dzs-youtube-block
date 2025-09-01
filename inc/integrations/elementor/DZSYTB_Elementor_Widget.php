@@ -54,7 +54,6 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
     // Verify config file exists before including it
     $config_file = DZSYTB_BASE_PATH . 'configs/config-gutenberg-player.php';
     if (!file_exists($config_file)) {
-      error_log('DZS YouTube Block: Config file not found: ' . $config_file);
       return;
     }
 
@@ -84,9 +83,6 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
 
       if (isset($configOption['category']) && $configOption['category'] === $seekedCategory) {
 
-//        if (!dzs_is_option_for_this($configOption, 'elementor')) {
-//          continue;
-//        }
 
         $controlName = sanitize_key($configOption['name']);
 

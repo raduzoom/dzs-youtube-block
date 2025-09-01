@@ -56,7 +56,6 @@ try {
     $dzsytb = DZSYTB();
 } catch (Exception $e) {
     // Log error and display user-friendly message
-    error_log('DZS YouTube Block initialization error: ' . $e->getMessage());
     add_action('admin_notices', function() {
         echo '<div class="notice notice-error"><p>' .
              esc_html__('DZS YouTube Block failed to initialize. Please check the error logs or reinstall the plugin.', 'dzs-youtube-block') .
