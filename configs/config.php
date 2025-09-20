@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 const DZSYTB_ID = 'dzsytb';
 const DZSYTB_VIEW_SHORTCODE_NAME = 'ytb_block';

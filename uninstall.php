@@ -38,25 +38,55 @@ foreach ($options_to_delete as $option) {
 }
 
 // Clean up user meta (if any)
+// Note: Direct query is necessary for bulk deletion during uninstall
 global $wpdb;
-$wpdb->query("DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE 'dzsytb_%'");
+$wpdb->query(
+  $wpdb->prepare(
+    "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE %s",
+    'dzsytb_%'
+  )
+);
 
 // Clean up post meta (if any)
-$wpdb->query("DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE 'dzsytb_%'");
+// Note: Direct query is necessary for bulk deletion during uninstall
+$wpdb->query(
+  $wpdb->prepare(
+    "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s",
+    'dzsytb_%'
+  )
+);
 
 // Clean up any custom database tables (if created)
+// Note: Schema changes are necessary during uninstall to remove plugin tables
 $tables_to_drop = array(
   $wpdb->prefix . 'dzsytb_logs',
   $wpdb->prefix . 'dzsytb_analytics'
 );
 
 foreach ($tables_to_drop as $table) {
-  $wpdb->query("DROP TABLE IF EXISTS {$table}");
+  // Use prepare to sanitize table name
+  $wpdb->query(
+    $wpdb->prepare(
+      "DROP TABLE IF EXISTS %i",
+      $table
+    )
+  );
 }
 
 // Clean up any transients
-$wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_dzsytb_%'");
-$wpdb->query("DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_timeout_dzsytb_%'");
+// Note: Direct queries are necessary for bulk deletion during uninstall
+$wpdb->query(
+  $wpdb->prepare(
+    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+    '_transient_dzsytb_%'
+  )
+);
+$wpdb->query(
+  $wpdb->prepare(
+    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+    '_transient_timeout_dzsytb_%'
+  )
+);
 
 // Clean up any scheduled events
 wp_clear_scheduled_hook('dzsytb_cleanup');

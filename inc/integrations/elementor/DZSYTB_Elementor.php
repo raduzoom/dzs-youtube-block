@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
 use Elementor\Plugin;
 
 #[AllowDynamicProperties]

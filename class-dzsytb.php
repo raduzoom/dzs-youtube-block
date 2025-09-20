@@ -1,4 +1,6 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 include_once DZSYTB_BASE_PATH . 'inc/php/class-admin.php';
 include_once DZSYTB_BASE_PATH . 'features/gutenberg/class-gutenberg.php';
 include_once DZSYTB_BASE_PATH . 'inc/php/class-view.php';

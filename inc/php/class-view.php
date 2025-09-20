@@ -1,5 +1,5 @@
 <?php
-
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 #[AllowDynamicProperties]
 class DZSYTBView {
@@ -28,7 +28,7 @@ class DZSYTBView {
   static function getYoutubeId($url) {
     // Sanitize and validate URL
     $url = esc_url_raw($url);
-    
+
     if (!str_contains($url, '.com')) {
       return sanitize_text_field($url);
     }
@@ -84,12 +84,12 @@ class DZSYTBView {
       $fout .= 'padding-top: ' . esc_attr((floatval($argsShortcodePlayer['aspectRatio']) * 100)) . '%;';
     }
     $fout .= '">';
-    
+
     // Escape YouTube URL and title
     $youtube_id = DZSYTBView::getYoutubeId($argsShortcodePlayer['youtubeUrl']);
     $title = esc_attr($argsShortcodePlayer['title']);
     $params = esc_attr($argsShortcodePlayer['youtube_params']);
-    
+
     $fout .= '<lite-youtube js-api class="dzsytb-fullsize" videoid="' . $youtube_id . '" playlabel="' . $title . '" params="' . $params . '" style=";';
 
     if ($argsShortcodePlayer['max_height']) {
@@ -144,13 +144,13 @@ class DZSYTBView {
 
   /**
    * Sanitize shortcode arguments
-   * 
+   *
    * @param array $args The arguments to sanitize
    * @return array The sanitized arguments
    */
   private function sanitize_shortcode_args($args) {
     $sanitized = array();
-    
+
     if (is_array($args)) {
       foreach ($args as $key => $value) {
         switch ($key) {
@@ -186,7 +186,7 @@ class DZSYTBView {
         }
       }
     }
-    
+
     return $sanitized;
   }
 
