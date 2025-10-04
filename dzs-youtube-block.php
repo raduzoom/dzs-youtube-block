@@ -66,14 +66,14 @@ try {
 
 if (!function_exists('dzs_read_from_file_ob')) {
 
-  function dzs_read_from_file_ob(string $filepath) {
+  function dzs_read_from_file_ob(string $filepath): bool|string {
     // -- @filepath - relative to dzs_functions
 
     // Security check: ensure filepath is within plugin directory
     $real_filepath = realpath($filepath);
     $plugin_path = realpath(DZSYTB_BASE_PATH);
 
-    if ($real_filepath === false || strpos($real_filepath, $plugin_path) !== 0) {
+    if ($real_filepath === false || !str_starts_with($real_filepath, $plugin_path)) {
         return '';
     }
 

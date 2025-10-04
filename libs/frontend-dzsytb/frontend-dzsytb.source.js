@@ -39,7 +39,7 @@ class DzsYtbPlayer {
     let player$ = this.getPlayer($ytb);
     player$.then(function(playerHere){
 
-      if(playerArgs.autoplay==='on'){ 
+      if(playerArgs.autoplay==='on'){
 
         playerHere.mute();
         playerHere.playVideo();
