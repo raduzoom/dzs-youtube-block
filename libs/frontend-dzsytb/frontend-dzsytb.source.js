@@ -130,11 +130,27 @@ class DzsYtbPlayer {
 jQuery(document).ready(function($) {
 
 
+  let pluginUrl = '';
+  // read plugin url from footer settings, if available
+  (function(){
+    const settingsDiv = document.getElementById('dzsytb-settings');
+    if(!settingsDiv){ return; }
+    try{
+      const data = JSON.parse(settingsDiv.textContent || settingsDiv.innerText || '{}');
+      pluginUrl = data?.dzsytb_settings?.plugin_url;
+      if(pluginUrl){
+        window.dzsytb_settings = Object.assign({}, window.dzsytb_settings || {}, {plugin_url: pluginUrl});
+      }
+    }catch(e){
+      // swallow
+    }
+  })();
 
 
+  // load https://unpkg.com/lite-youtube-embed@0.3.2/src/lite-yt-embed.css and https://unpkg.com/lite-youtube-embed@0.3.2/src/lite-yt-embed.js <- self hosted
   setTimeout(()=>{
-    embedStyle('https://unpkg.com/lite-youtube-embed@0.3.2/src/lite-yt-embed.css')
-    embedScript('https://unpkg.com/lite-youtube-embed@0.3.2/src/lite-yt-embed.js', () => {
+    embedStyle(pluginUrl+'libs/3party/lite-youtube-embed/lite-yt-embed.css')
+    embedScript(pluginUrl+'libs/3party/lite-youtube-embed/lite-yt-embed.js', () => {
       $('.dzsytb-con').each(function () {
         /** @type {jQuery} */
         var $t = $(this);
@@ -143,7 +159,7 @@ jQuery(document).ready(function($) {
       })
 
     })
-  },300);
+  },100);
 
 
 

@@ -36,6 +36,9 @@ class DZSYtBlock {
 
     add_action('plugins_loaded', array($this, 'handle_plugins_loaded'));
 
+    // expose settings for frontend scripts
+    add_action('wp_footer', array($this, 'output_footer_settings'));
+
 
 
   }
@@ -63,5 +66,22 @@ class DZSYtBlock {
         $this->classElementor = new DZSYTB_Elementor($this);
       }
     }
+  }
+
+  /**
+   * Outputs a hidden div in wp_footer containing JSON settings for frontend usage
+   */
+  function output_footer_settings() {
+    if (!defined('DZSYTB_BASE_URL')) {
+      return;
+    }
+
+    $settings = array(
+      'dzsytb_settings' => array(
+        'plugin_url' => DZSYTB_BASE_URL,
+      ),
+    );
+
+    echo '<div id="dzsytb-settings" class="dzsytb-settings" style="display:none;">' . wp_json_encode($settings) . '</div>';
   }
 }
