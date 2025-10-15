@@ -40,6 +40,7 @@ foreach ($options_to_delete as $option) {
 // Clean up user meta (if any)
 // Note: Direct query is necessary for bulk deletion during uninstall
 global $wpdb;
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- bulk cleanup during uninstall; no caching appropriate
 $wpdb->query(
   $wpdb->prepare(
     "DELETE FROM {$wpdb->usermeta} WHERE meta_key LIKE %s",
@@ -49,6 +50,7 @@ $wpdb->query(
 
 // Clean up post meta (if any)
 // Note: Direct query is necessary for bulk deletion during uninstall
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- bulk cleanup during uninstall; no caching appropriate
 $wpdb->query(
   $wpdb->prepare(
     "DELETE FROM {$wpdb->postmeta} WHERE meta_key LIKE %s",
@@ -64,23 +66,30 @@ $tables_to_drop = array(
 );
 
 foreach ($tables_to_drop as $table) {
-  // Use prepare to sanitize table name
+  // Validate identifier (table name) and avoid unsupported %i placeholder
+  if (strpos($table, $wpdb->prefix) !== 0) {
+    continue;
+  }
+  if (!preg_match('/^[A-Za-z0-9_]+$/', $table)) {
+    continue;
+  }
+  // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- removing plugin tables during uninstall by design
   $wpdb->query(
-    $wpdb->prepare(
-      "DROP TABLE IF EXISTS %i",
-      $table
-    )
+    // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange -- identifier validated above; schema change intentional during uninstall
+    "DROP TABLE IF EXISTS `{$table}`"
   );
 }
 
 // Clean up any transients
 // Note: Direct queries are necessary for bulk deletion during uninstall
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- bulk cleanup during uninstall; no caching appropriate
 $wpdb->query(
   $wpdb->prepare(
     "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
     '_transient_dzsytb_%'
   )
 );
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- bulk cleanup during uninstall; no caching appropriate
 $wpdb->query(
   $wpdb->prepare(
     "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",

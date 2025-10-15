@@ -3,8 +3,8 @@
   Plugin Name: Video Block Cover for YouTube DZS, Elementor
   Plugin URI: https://github.com/raduzoom/
   Description: Add a youtube block.
-  Version: 1.0.1
-  Text Domain: video-block-cover-for-youtube-dzs-elementor
+  Version: 1.0.5
+  Text Domain: dzs-youtube-block
   Domain Path: languages
   License: GPL-2.0-or-later
   License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-const DZSYTB_VERSION = '1.0.1';
+const DZSYTB_VERSION = '1.0.5';
 
 // Define plugin constants with proper checks
 if (function_exists('plugin_dir_url')) {
@@ -28,7 +28,7 @@ if (function_exists('plugin_dir_path')) {
 // Include main class file with existence check
 $main_class_file = DZSYTB_BASE_PATH . 'class-dzsytb.php';
 if (!file_exists($main_class_file)) {
-    wp_die(esc_html__('Required plugin file not found. Please reinstall the plugin.', 'video-block-cover-for-youtube-dzs-elementor'));
+    wp_die(esc_html__('Required plugin file not found. Please reinstall the plugin.', 'dzs-youtube-block'));
 }
 
 if (!class_exists('DZSYtBlock')) {
@@ -48,7 +48,7 @@ $config_file = DZSYTB_BASE_PATH . 'configs/config.php';
 if (file_exists($config_file)) {
     include_once($config_file);
 } else {
-    wp_die(esc_html__('Configuration file not found. Please reinstall the plugin.', 'video-block-cover-for-youtube-dzs-elementor'));
+    wp_die(esc_html__('Configuration file not found. Please reinstall the plugin.', 'dzs-youtube-block'));
 }
 
 // Initialize the plugin
@@ -58,7 +58,7 @@ try {
     // Log error and display user-friendly message
     add_action('admin_notices', function() {
         echo '<div class="notice notice-error"><p>' .
-             esc_html__('DZS YouTube Block failed to initialize. Please check the error logs or reinstall the plugin.', 'video-block-cover-for-youtube-dzs-elementor') .
+             esc_html__('DZS YouTube Block failed to initialize. Please check the error logs or reinstall the plugin.', 'dzs-youtube-block') .
              '</p></div>';
     });
     return;
