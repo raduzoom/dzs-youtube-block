@@ -3,7 +3,7 @@
   Plugin Name: Video Block Cover for YouTube DZS, Elementor
   Plugin URI: https://github.com/raduzoom/
   Description: Add a youtube block.
-  Version: 1.0.5
+  Version: 1.0.6
   Text Domain: dzs-youtube-block
   Domain Path: languages
   License: GPL-2.0-or-later
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-const DZSYTB_VERSION = '1.0.5';
+const DZSYTB_VERSION = '1.0.6';
 
 // Define plugin constants with proper checks
 if (function_exists('plugin_dir_url')) {

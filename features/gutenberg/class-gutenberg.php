@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+
 include_once DZSYTB_BASE_PATH.'features/gutenberg-block-factory/DzsCommonGutenbergBlockFactory.php';
 use DigitalZoomStudio\Common\Gutenberg\V1\BlockFactory;
 

@@ -20,7 +20,7 @@ class DZSYtBlock {
    * @var DZSYTBView
    *8 - update
    */
-  public $classView;
+  public DZSYTBView $classView;
   /**
    * @var DZSYTBGutenberg
    */

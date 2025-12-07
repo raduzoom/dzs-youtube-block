@@ -79,10 +79,6 @@ Unlike basic YouTube embeds, our plugin provides:
 
 Yes! DZS YouTube Block is designed to work with all WordPress themes that support Gutenberg blocks.
 
-= Can I customize the appearance of the video player? =
-
-Absolutely! The plugin includes multiple themes and customization options in the block settings panel.
-
 = Does this plugin work with page builders? =
 
 Yes, it's compatible with most page builders including Elementor (with our dedicated widget).
@@ -99,14 +95,43 @@ Yes, the plugin supports both single videos and playlists.
 
 No, you can embed as many videos as you want on any page or post.
 
-== Screenshots ==
+### Screenshots
 
 1. **Gutenberg Block Editor** - The YouTube block in action
 2. **Block Settings Panel** - Customization options
 3. **Frontend Display** - How videos appear on your website
 4. **Responsive Design** - Mobile and tablet views
+   == Source Code and Build Tools ==
 
-== Changelog ==
+This plugin ships compiled JavaScript for performance, along with the corresponding readable source files and build instructions. All source files used to generate the distributed/minified assets are included in the plugin, so they can be reviewed, studied, and forked.
+
+= Frontend player script =
+
+* Compiled file (distributed): libs/frontend-dzsytb/frontend-dzsytb.js
+* Source file (readable): libs/frontend-dzsytb/frontend-dzsytb.source.js
+* Build tools used: browserify, envify, babelify, minifyify
+
+To rebuild the compiled file from source (run from the plugin directory):
+
+    npx browserify libs/frontend-dzsytb/frontend-dzsytb.source.js \
+      -t [ envify --NODE_ENV production ] \
+      -t [ babelify --presets [@babel/preset-env @babel/preset-react] ] \
+      -p [ minifyify --map frontend-dzsytb.js.map --output libs/frontend-dzsytb/frontend-dzsytb.js.map ] \
+      --debug \
+      -o libs/frontend-dzsytb/frontend-dzsytb.js
+
+
+## Gutenberg block script
+
+* Compiled file (distributed): features/gutenberg/gutenberg-player.js
+* Main source modules (readable):
+    * features/gutenberg/gutenberg-player.reactpack.js
+    * features/gutenberg/components/YoutubeBlockPreview.js
+    * configs/config-gutenberg-player.json
+
+These files contain the unminified, human-readable source for the Gutenberg block and can be inspected, modified, and rebuilt using standard Node/Webpack tooling.
+
+## Changelog
 
 = 1.0.0 =
 * Initial release

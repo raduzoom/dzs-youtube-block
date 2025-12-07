@@ -197,14 +197,6 @@ class DZSYTBView {
         'in_footer' => true,
         'strategy' => 'defer',
       ));
-
-//    wp_enqueue_style('lite-yt-embed', 'https://unpkg.com/lite-youtube-embed@0.3.2/src/lite-youtube-embed.css');
-//    wp_enqueue_script('lite-yt-embed', 'https://unpkg.com/lite-youtube-embed@0.3.2/src/lite-youtube-embed.js', array(), DZSYTB_VERSION,
-//      array(
-//        'in_footer' => true,
-//        'strategy' => 'defer',
-//      )
-//    );
   }
 
 }
