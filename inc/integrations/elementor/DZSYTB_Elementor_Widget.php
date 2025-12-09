@@ -46,7 +46,7 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
     $this->start_controls_section(
       'content_section',
       [
-      'label' => esc_html__('Content', 'dzs-youtube-block'),
+      'label' => esc_html__('Content', 'dzs-video-block-for-youtube'),
       'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
       ]
     );
@@ -138,7 +138,7 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
 
             if (isset($configOption['extra_type']) && $configOption['extra_type'] === 'switcher') {
               $controlArgs['type'] = \Elementor\Controls_Manager::SWITCHER;
-              $controlArgs['label_on'] = esc_html__('Enable', 'dzs-youtube-block');;
+              $controlArgs['label_on'] = esc_html__('Enable', 'dzs-video-block-for-youtube');;
               $controlArgs['return_value'] = 'on';
             } else {
               $controlArgs['options'] = $elm->mapChoicesToFlatArray($configOption['options']);
@@ -165,7 +165,7 @@ class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
   }
 
   public function get_title() {
-    return esc_html__('YouTube Block', 'dzs-youtube-block');
+    return esc_html__('YouTube Block', 'dzs-video-block-for-youtube');
   }
 
   public function get_icon() {

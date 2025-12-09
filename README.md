@@ -1,10 +1,10 @@
-=== Video Block Cover for YouTube DZS, Elementor ===
+=== Video Block Cover for YouTube DZS ===
 Contributors: digitalzoomstudio
 Tags: youtube, video, gutenberg, block, media
 Requires at least: 6.2
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,7 +61,7 @@ Unlike basic YouTube embeds, our plugin provides:
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/dzs-youtube-block` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/dzs-video-block-for-youtube` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Start using the YouTube block in your Gutenberg editor!
 

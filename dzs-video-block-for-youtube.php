@@ -3,8 +3,8 @@
   Plugin Name: Video Block Cover for YouTube DZS, Elementor
   Plugin URI: https://github.com/raduzoom/
   Description: Add a youtube block.
-  Version: 1.0.6
-  Text Domain: dzs-youtube-block
+  Version: 1.0.7
+  Text Domain: dzs-video-block-for-youtube
   Domain Path: languages
   License: GPL-2.0-or-later
   License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -12,10 +12,10 @@
   Author URI: https://digitalzoomstudio.net/
  */
 if (!defined('ABSPATH')) {
-    exit;
+  exit;
 }
 
-const DZSYTB_VERSION = '1.0.6';
+const DZSYTB_VERSION = '1.0.7';
 
 // Define plugin constants with proper checks
 if (function_exists('plugin_dir_url')) {
@@ -28,7 +28,7 @@ if (function_exists('plugin_dir_path')) {
 // Include main class file with existence check
 $main_class_file = DZSYTB_BASE_PATH . 'class-dzsytb.php';
 if (!file_exists($main_class_file)) {
-    wp_die(esc_html__('Required plugin file not found. Please reinstall the plugin.', 'dzs-youtube-block'));
+  wp_die(esc_html__('Required plugin file not found. Please reinstall the plugin.', 'dzs-video-block-for-youtube'));
 }
 
 if (!class_exists('DZSYtBlock')) {
@@ -46,22 +46,22 @@ function DZSYTB(): DZSYtBlock {
 // Include configuration file with existence check
 $config_file = DZSYTB_BASE_PATH . 'configs/config.php';
 if (file_exists($config_file)) {
-    include_once($config_file);
+  include_once($config_file);
 } else {
-    wp_die(esc_html__('Configuration file not found. Please reinstall the plugin.', 'dzs-youtube-block'));
+  wp_die(esc_html__('Configuration file not found. Please reinstall the plugin.', 'dzs-video-block-for-youtube'));
 }
 
 // Initialize the plugin
 try {
-    $dzsytb = DZSYTB();
+  $dzsytb = DZSYTB();
 } catch (Exception $e) {
-    // Log error and display user-friendly message
-    add_action('admin_notices', function() {
-        echo '<div class="notice notice-error"><p>' .
-             esc_html__('DZS YouTube Block failed to initialize. Please check the error logs or reinstall the plugin.', 'dzs-youtube-block') .
-             '</p></div>';
-    });
-    return;
+  // Log error and display user-friendly message
+  add_action('admin_notices', function () {
+    echo '<div class="notice notice-error"><p>' .
+      esc_html__('DZS YouTube Block failed to initialize. Please check the error logs or reinstall the plugin.', 'dzs-video-block-for-youtube') .
+      '</p></div>';
+  });
+  return;
 }
 
 if (!function_exists('dzs_read_from_file_ob')) {
@@ -74,7 +74,7 @@ if (!function_exists('dzs_read_from_file_ob')) {
     $plugin_path = realpath(DZSYTB_BASE_PATH);
 
     if ($real_filepath === false || !str_starts_with($real_filepath, $plugin_path)) {
-        return '';
+      return '';
     }
 
     ob_start();
