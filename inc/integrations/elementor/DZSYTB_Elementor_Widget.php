@@ -10,25 +10,6 @@ if (!class_exists('\Elementor\Widget_Base')) {
   return;
 }
 
-if (!function_exists('dzs_is_option_for_this')) {
-  function dzs_is_option_for_this($oim, $seekedTag) {
-
-    if (isset($oim['it_is_for']) && $oim['it_is_for']) {
-      if (is_array($oim['it_is_for'])) {
-        if (in_array($seekedTag, $oim['it_is_for'])) {
-          return true;
-        }
-        return false;
-      } else {
-        if ($oim['it_is_for'] == $seekedTag) {
-          return true;
-        }
-        return false;
-      }
-    }
-    return true;
-  }
-}
 
 class DZSYTB_Elementor__Widget extends \Elementor\Widget_Base {
 
