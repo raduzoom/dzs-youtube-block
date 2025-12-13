@@ -3,7 +3,7 @@
   Plugin Name: Video Block Cover for YouTube DZS
   Plugin URI: https://github.com/raduzoom/
   Description: Add a youtube block.
-  Version: 1.0.7
+  Version: 1.0.8
   Text Domain: dzs-video-block-for-youtube
   Domain Path: /languages
   License: GPL-2.0-or-later
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
-const DZSYTB_VERSION = '1.0.7';
+const DZSYTB_VERSION = '1.0.8';
 
 // Define plugin constants with proper checks
 if (function_exists('plugin_dir_url')) {
@@ -26,13 +26,13 @@ if (function_exists('plugin_dir_path')) {
 }
 
 // Include main class file with existence check
-$main_class_file = DZSYTB_BASE_PATH . 'class-dzsytb.php';
-if (!file_exists($main_class_file)) {
+const DZSYTB_MAIN_CLASS_FILE = DZSYTB_BASE_PATH . 'class-dzsytb.php';
+if (!file_exists(DZSYTB_MAIN_CLASS_FILE)) {
   wp_die(esc_html__('Required plugin file not found. Please reinstall the plugin.', 'dzs-video-block-for-youtube'));
 }
 
 if (!class_exists('DZSYtBlock')) {
-  include_once($main_class_file);
+  include_once(DZSYTB_MAIN_CLASS_FILE);
 }
 
 /**
@@ -44,9 +44,9 @@ function DZSYTB(): DZSYtBlock {
 }
 
 // Include configuration file with existence check
-$config_file = DZSYTB_BASE_PATH . 'configs/config.php';
-if (file_exists($config_file)) {
-  include_once($config_file);
+const DZSYTB_CONFIG_FILE = DZSYTB_BASE_PATH . 'configs/config.php';
+if (file_exists(DZSYTB_CONFIG_FILE)) {
+  include_once(DZSYTB_CONFIG_FILE);
 } else {
   wp_die(esc_html__('Configuration file not found. Please reinstall the plugin.', 'dzs-video-block-for-youtube'));
 }

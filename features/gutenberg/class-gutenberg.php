@@ -3,7 +3,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 
 include_once DZSYTB_BASE_PATH.'features/gutenberg-block-factory/DzsCommonGutenbergBlockFactory.php';
-use DigitalZoomStudio\Common\Gutenberg\V1\BlockFactory;
 
 #[AllowDynamicProperties]
 class DZSYTBGutenberg {
@@ -28,7 +27,7 @@ class DZSYTBGutenberg {
 
 
 
-    $gutenbergPlayer = new BlockFactory(array(
+    $gutenbergPlayer = new DzsCommonGutenbergBlockFactory(array(
       'gutenbergBlockName' => DZSYTB_GUTENBERG_PLAYER_ID,
       'gutenbergBlockNameJs' => DZSYTB_GUTENBERG_PLAYER_ID,
       'blockJsUrl' => DZSYTB_BASE_URL . 'features/gutenberg/gutenberg-player.js',

@@ -4,11 +4,11 @@ Tags: youtube, video, gutenberg, block, media
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A powerful and feature-rich YouTube block for the WordPress Gutenberg editor with advanced customization options, responsive design, and seamless integration.
+A YouTube block for the WordPress Gutenberg editor with advanced customization, responsive design, and seamless integration.
 
 == Description ==
 

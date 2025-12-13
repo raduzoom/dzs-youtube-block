@@ -26,16 +26,16 @@ if (!defined('DZSYTB_VERSION')) {
 }
 
 // Clean up plugin options
-$options_to_delete = array(
+$dzsytb_options_to_delete = array(
   'dzsytb_settings',
   'dzsytb_version',
   'dzsytb_activated',
   'dzsytb_db_version'
 );
 
-foreach ($options_to_delete as $option) {
-  delete_option($option);
-  delete_site_option($option); // For multisite
+foreach ($dzsytb_options_to_delete as $dzsytb_option) {
+  delete_option($dzsytb_option);
+  delete_site_option($dzsytb_option); // For multisite
 }
 
 // Clean up user meta (if any)
@@ -61,23 +61,23 @@ $wpdb->query(
 
 // Clean up any custom database tables (if created)
 // Note: Schema changes are necessary during uninstall to remove plugin tables
-$tables_to_drop = array(
+$dzsytb_tables_to_drop = array(
   $wpdb->prefix . 'dzsytb_logs',
   $wpdb->prefix . 'dzsytb_analytics'
 );
 
-foreach ($tables_to_drop as $table) {
+foreach ($dzsytb_tables_to_drop as $dzsytb_table) {
   // Validate identifier (table name) and avoid unsupported %i placeholder
-  if (strpos($table, $wpdb->prefix) !== 0) {
+  if (strpos($dzsytb_table, $wpdb->prefix) !== 0) {
     continue;
   }
-  if (!preg_match('/^[A-Za-z0-9_]+$/', $table)) {
+  if (!preg_match('/^[A-Za-z0-9_]+$/', $dzsytb_table)) {
     continue;
   }
   // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- removing plugin tables during uninstall by design
   $wpdb->query(
     // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.SchemaChange -- identifier validated above; schema change intentional during uninstall
-    "DROP TABLE IF EXISTS `{$table}`"
+    "DROP TABLE IF EXISTS `{$dzsytb_table}`"
   );
 }
 
@@ -103,24 +103,24 @@ wp_clear_scheduled_hook('dzsytb_cleanup');
 wp_clear_scheduled_hook('dzsytb_analytics');
 
 // Remove any custom capabilities (if added)
-$admin_role = get_role('administrator');
-if ($admin_role) {
-  $capabilities_to_remove = array(
+$dzsytb_admin_role = get_role('administrator');
+if ($dzsytb_admin_role) {
+  $dzsytb_capabilities_to_remove = array(
     'manage_dzsytb',
     'edit_dzsytb',
     'delete_dzsytb'
   );
 
-  foreach ($capabilities_to_remove as $cap) {
-    $admin_role->remove_cap($cap);
+  foreach ($dzsytb_capabilities_to_remove as $dzsytb_cap) {
+    $dzsytb_admin_role->remove_cap($dzsytb_cap);
   }
 }
 
 // Clean up any uploaded files in wp-content/uploads/dzsytb/ (if exists)
-$upload_dir = wp_upload_dir();
-$plugin_upload_dir = $upload_dir['basedir'] . '/dzsytb/';
+$dzsytb_upload_dir = wp_upload_dir();
+$dzsytb_plugin_upload_dir = $dzsytb_upload_dir['basedir'] . '/dzsytb/';
 
-if (is_dir($plugin_upload_dir)) {
+if (is_dir($dzsytb_plugin_upload_dir)) {
   // Recursively remove directory and contents
   function dzsytb_remove_directory($dir) {
     if (is_dir($dir)) {
@@ -140,7 +140,7 @@ if (is_dir($plugin_upload_dir)) {
     return false;
   }
 
-  dzsytb_remove_directory($plugin_upload_dir);
+  dzsytb_remove_directory($dzsytb_plugin_upload_dir);
 }
 
 
