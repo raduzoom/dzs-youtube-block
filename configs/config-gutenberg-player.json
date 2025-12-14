@@ -61,7 +61,7 @@
     "type": "textarea",
     "extra_type": "WYSIWYG",
     "upload_type": "image",
-    "title": "Description",
+    "title": "Extra YouTube Params",
     "default": "controls=0&modestbranding=2&rel=0&enablejsapi=1&rel=0&playsinline=1&mute=1",
     "sidenote": "extra params",
     "category": "main"

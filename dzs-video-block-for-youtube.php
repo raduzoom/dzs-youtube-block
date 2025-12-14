@@ -1,9 +1,9 @@
 <?php
 /*
-  Plugin Name: Video Block Cover for YouTube DZS
+  Plugin Name: DZS Video Block Cover for YouTube
   Plugin URI: https://github.com/raduzoom/
   Description: Add a youtube block.
-  Version: 1.0.8
+  Version: 1.0.9
   Text Domain: dzs-video-block-for-youtube
   Domain Path: /languages
   License: GPL-2.0-or-later
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
-const DZSYTB_VERSION = '1.0.8';
+const DZSYTB_VERSION = '1.0.9';
 
 // Define plugin constants with proper checks
 if (function_exists('plugin_dir_url')) {

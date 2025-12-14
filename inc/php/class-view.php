@@ -191,8 +191,8 @@ class DZSYTBView {
   }
 
   static function enqueueFeScripts(): void {
-    wp_enqueue_style('dzsytb-frontend', DZSYTB_BASE_URL . 'libs/frontend-dzsytb/frontend-dzsytb.css');
-    wp_enqueue_script('dzsytb-frontend', DZSYTB_BASE_URL . 'libs/frontend-dzsytb/frontend-dzsytb.js', array(), DZSYTB_VERSION,
+    wp_enqueue_style('dzsytb-frontend', DZSYTB_BASE_URL . 'libs/dzsytb-frontend/dzsytb-frontend.css', array(), DZSYTB_VERSION);
+    wp_enqueue_script('dzsytb-frontend', DZSYTB_BASE_URL . 'libs/dzsytb-frontend/dzsytb-frontend.js', array(), DZSYTB_VERSION,
       array(
         'in_footer' => true,
         'strategy' => 'defer',

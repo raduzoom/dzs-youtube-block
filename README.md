@@ -1,10 +1,10 @@
-=== Video Block Cover for YouTube DZS ===
+=== DZS Video Block Cover for YouTube ===
 Contributors: digitalzoomstudio
 Tags: youtube, video, gutenberg, block, media
 Requires at least: 6.2
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -107,18 +107,18 @@ This plugin ships compiled JavaScript for performance, along with the correspond
 
 = Frontend player script =
 
-* Compiled file (distributed): libs/frontend-dzsytb/frontend-dzsytb.js
-* Source file (readable): libs/frontend-dzsytb/frontend-dzsytb.source.js
+* Compiled file (distributed): libs/dzsytb-frontend/dzsytb-frontend.js
+* Source file (readable): libs/dzsytb-frontend/dzsytb-frontend.source.js
 * Build tools used: browserify, envify, babelify, minifyify
 
 To rebuild the compiled file from source (run from the plugin directory):
 
-    npx browserify libs/frontend-dzsytb/frontend-dzsytb.source.js \
+    npx browserify libs/dzsytb-frontend/dzsytb-frontend.source.js \
       -t [ envify --NODE_ENV production ] \
       -t [ babelify --presets [@babel/preset-env @babel/preset-react] ] \
-      -p [ minifyify --map frontend-dzsytb.js.map --output libs/frontend-dzsytb/frontend-dzsytb.js.map ] \
+      -p [ minifyify --map dzsytb-frontend.js.map --output libs/dzsytb-frontend/dzsytb-frontend.js.map ] \
       --debug \
-      -o libs/frontend-dzsytb/frontend-dzsytb.js
+      -o libs/dzsytb-frontend/dzsytb-frontend.js
 
 
 ## Gutenberg block script
