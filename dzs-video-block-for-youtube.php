@@ -4,6 +4,7 @@
   Plugin URI: https://github.com/raduzoom/
   Description: Add a youtube block.
   Version: 1.0.9
+  Stable tag: 1.0.9
   Text Domain: dzs-video-block-for-youtube
   Domain Path: /languages
   License: GPL-2.0-or-later
